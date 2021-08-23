@@ -8,20 +8,22 @@
     <link rel="stylesheet" href="/static/css/site.css">
     <title>{% block title%}{% endblock %}</title>
 </head>
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <a class="nav-link" href="/homepage">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/recipes">Recipes</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/list">Shopping List</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/acct">Account Info</a>
-    </li>
-</ul>        
+<div id="nav-bar">
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" href="/homepage">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/recipes">Recipes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/list">Shopping List</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/acct">Account Info</a>
+        </li>
+    </ul>
+</div>     
 <body>
     {% block body %}
     {% endblock %}

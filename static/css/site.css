@@ -2,6 +2,22 @@ div {
     border: 2px solid black;
 }
 
+#nav-bar {
+    background-color: black;
+}
+
+.nav-link{
+    color: white;
+}
+
+.container {
+    margin-top: 2%;
+}
+
+.form-check {
+    width: fit-content;
+}
+
 body {
     text-align: center;
   }
