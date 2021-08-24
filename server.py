@@ -1,4 +1,4 @@
-from model import connect_to_db
+from model import connect_to_db, db, User
 from flask import Flask, render_template, redirect, flash, session, request
 from datetime import date as dt
 import jinja2
@@ -52,7 +52,6 @@ def show_list():
 
     shopping_list = ['apple', 'orange', 'grape', 'watermelon']
     return render_template("shopping_list.html", shopping_list=shopping_list)
-
 
 if __name__ == "__main__":
     connect_to_db(app)
