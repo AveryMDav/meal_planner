@@ -1,7 +1,3 @@
-div {
-    border: 2px solid black;
-}
-
 #nav-bar {
     background-color: black;
 }
@@ -21,3 +17,12 @@ div {
 body {
     text-align: center;
   }
+
+.form{
+    background-color: lightgray;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px;
+    margin-top: 40px;
+}

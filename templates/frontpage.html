@@ -11,8 +11,19 @@
 <body>
 <div class="site-wrapper">
     <div class="site-wrapper-inner">
-        <a href="/homepage" class="btn btn-success">Log In</a>
-        <a href="/homepage" class="btn btn-success">Sign Up</a>
+        <form method="POST">
+            <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email">                
+            </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-success" type="submit" value="Log In">
+        </div>
+            <a href="/sign_up">Sign Up</a>
     </div>
 </div>
 </body>

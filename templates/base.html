@@ -22,6 +22,11 @@
         <li class="nav-item">
             <a class="nav-link" href="/acct">Account Info</a>
         </li>
+        {% if "user" in session %}
+        <li class="nav-item" id="">
+            <a class="nav-link" href="/log_out">Log out</a>
+        </li>
+        {% endif %}
     </ul>
 </div>     
 <body>

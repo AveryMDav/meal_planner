@@ -10,12 +10,11 @@ class user(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(60), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     first_name = db.Column(db.String(60), nullable=False)
     last_name = db.Column(db.String(60), nullable=False)
     phone_number = db.Column(db.String(10))
-    email = db.Column(db.String(60))
+    email = db.Column(db.String(60), unique=True)
     weight = db.Column(db.Integer)
     dcg = db.Column(db.Integer)
 
@@ -35,25 +34,6 @@ class weekly_planner(db.Model):
     def __repr__(self):
         return f"<planner weekly planner_id={self.weekly_planner_id} user_id={self.user_id}>"
 
-class scheduled_item(db.Model):
-    """table for scheduling items in weekly planner"""
-
-    __tablename__ = "scheduled_items"
-
-    scheduled_item_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    meal_day = db.Column(db.String(10), nullable=False)
-    meal_type = db.Column(db.String(10), nullable=False)
-    base_food_id = db.Column(db.Integer, db.ForeignKey('base_food.base_food_id'))
-    weekly_planner_id = db.Column(db.Integer, db.ForeignKey('weekly_planner.weekly_planner_id'), nullable=False)
-    recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'))
-
-    base_food = db.relationship("base_food", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
-    weekly_planner = db.relationship("weekly_planner", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
-    recipes = db.relationship("recipes", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
-
-    def __repr__(self):
-        return f"<scheduled_item day={self.meal_day} type={self.meal_type} meal={self.base_food_id}{self.recipes_id}>"
-
 class base_food(db.Model):
     """table for base foods like bananas, eggs, etc"""
 
@@ -66,6 +46,25 @@ class base_food(db.Model):
     def __repr__(self):
         return f"<base_food food={self.item_name} calories={self.calorie_count}>"
 
+class scheduled_item(db.Model):
+    """table for scheduling items in weekly planner"""
+
+    __tablename__ = "scheduled_items"
+
+    scheduled_item_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    meal_day = db.Column(db.String(10), nullable=False)
+    meal_type = db.Column(db.String(10), nullable=False)
+    base_food_id = db.Column(db.Integer, db.ForeignKey('base_foods.base_food_id'))
+    weekly_planner_id = db.Column(db.Integer, db.ForeignKey('weekly_planner.weekly_planner_id'), nullable=False)
+    recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'))
+
+    base_food = db.relationship("base_food", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
+    weekly_planner = db.relationship("weekly_planner", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
+    recipes = db.relationship("recipes", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
+
+    def __repr__(self):
+        return f"<scheduled_item day={self.meal_day} type={self.meal_type} meal={self.base_food_id}{self.recipes_id}>"
+
 class recipes(db.Model):
     """Holds all recipes saved in database"""
 
@@ -73,7 +72,7 @@ class recipes(db.Model):
 
     recipes_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     recipe_name = db.Column(db.String(60), nullable=False)
-    directions = db.Column(db.Text(1500), nullable=False)
+    directions = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f"<recipes recipe={self.recipe_name}>"
@@ -85,7 +84,7 @@ class recipes_food(db.Model):
 
     recipes_food_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
-    base_food_id = db.Column(db.Integer, db.ForeignKey('base_food.base_food_id'), nullable=False)
+    base_food_id = db.Column(db.Integer, db.ForeignKey('base_foods.base_food_id'), nullable=False)
     recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'), nullable=False)
 
     recipes = db.relationship("recipes", backref=db.backref("recipes-food", order_by=recipes_food_id))
