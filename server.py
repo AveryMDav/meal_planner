@@ -1,4 +1,5 @@
 from model import connect_to_db, db, user
+from util import items_info
 from flask import Flask, render_template, redirect, flash, session, request
 from datetime import date as dt
 import jinja2
@@ -46,29 +47,35 @@ def show_recipes():
     recipe_list = ['recipe', 'recipe', 'recipe','recipe','recipe','recipe','recipe','recipe','recipe','recipe']
     return render_template("recipes.html", recipe_list=recipe_list)
 
-@app.route("/homepage")
-def show_homepage():
+@app.route("/homepage", methods=["POST", "GET"])
+def show_homepage(info=None):
     if "user" not in session:
         return redirect("/")
+    
+    if request.method == "POST":
+        item = request.form["meal"]
+        info = items_info(item)
+        
+        result = info
 
     today = dt.today().strftime("%B %d, %Y")
     day_of_week = dt.today().weekday()
 
     if day_of_week == 0:
-        day_of_week = "Monday"
+            day_of_week = "Monday"
     elif day_of_week == 1:
-        day_of_week = "Tuesday"
+            day_of_week = "Tuesday"
     elif day_of_week == 2:
-        day_of_week = "Wednesday"
+            day_of_week = "Wednesday"
     elif day_of_week == 3:
-        day_of_week = "Thursday"
+            day_of_week = "Thursday"
     elif day_of_week == 4:
-        day_of_week = "Friday"
+            day_of_week = "Friday"
     elif day_of_week == 5:
-        day_of_week = "Saturday"
+            day_of_week = "Saturday"
     else:
-        day_of_week = "Sunday"
-    return render_template("homepage.html", today=today, day_of_week=day_of_week)
+            day_of_week = "Sunday"
+    return render_template("homepage.html", today=today, day_of_week=day_of_week, result=result)
 
 @app.route("/acct")
 def show_acct_info():

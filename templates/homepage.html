@@ -4,33 +4,64 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-            <h2>{{day_of_week}}</h2>
-            <h2>{{today}}</h2>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="meal" class="form-label">Add Meal</label>
+                <input type="text" class="form-control" id="meal" name="meal">
+                <input type="submit" value="Add">
+            </div>
+        </form>
+        {% if result %}
+        {% for key, value in result.items() %}
+        <div class="col">
+        <p>{{key}}  {{value}}kcal</p>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+</button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        {% endif %}
         </div>
         <div class="col">
             <div class="col">
-                <h1>Weekly planner</h1>
+            <h2>{{day_of_week}}</h2>
+            <h2>{{today}}</h2>
             </div>
             <div class="row align-items-start">
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>monday</h5>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>tuesday</h5>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>wednesday</h5>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>thursday</h5>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>friday</h5>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>saturday</h5>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <h5>sunday</h5>
                 </div>
             </div>

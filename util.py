@@ -8,7 +8,7 @@ def items_info(search):
 
     item = json.loads(requests.get(f"{api}&ingr={search}").text)
     
-    return dict(zip([label['food']['label'] for label in item['hints']],
+    info =  dict(zip([label['food']['label'] for label in item['hints']],
                           [int(cal['food']['nutrients']['ENERC_KCAL']) for cal in item['hints']]))
-
-print(items_info('banana'))
+    
+    return info

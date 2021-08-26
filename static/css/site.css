@@ -26,3 +26,15 @@ body {
     padding: 30px;
     margin-top: 40px;
 }
+
+.col{
+    border: solid;
+}
+
+.col-sm-3{
+    border: solid;
+}
+
+.col-sm-2{
+    border: solid;
+}
