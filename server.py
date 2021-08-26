@@ -29,7 +29,7 @@ def process_log_in():
             account_user = user.query.filter_by(email=email).first()
             if account_user.password == password:
                 flash("Logged In Succesfully")
-                session["user"] = f"{account_user.first_name} {account_user.last_name}"
+                session["user"] = f"{account_user.email}"
                 return redirect("/homepage")
             else:
                 flash("Incorrect Password")
@@ -53,10 +53,9 @@ def show_homepage(info=None):
         return redirect("/")
     
     if request.method == "POST":
-        item = request.form["meal"]
-        info = items_info(item)
+        info = items_info(request.form["meal"])
         
-        result = info
+    result = info
 
     today = dt.today().strftime("%B %d, %Y")
     day_of_week = dt.today().weekday()
@@ -82,7 +81,19 @@ def show_acct_info():
     if "user" not in session:
         return redirect("/")
 
-    return render_template("acct_info.html")
+
+    user_search = user.query.filter_by(email=session["user"]).first()
+
+    user_info = {
+        "Name": f"{user_search.first_name} {user_search.last_name}",
+        "Email": f"{user_search.email}",
+        "Phone Number": f"{user_search.phone_number}",
+        "Weight": f"{user_search.weight}",
+        "Daily Calorie Goal": f"{user_search.dcg}"
+
+    }
+
+    return render_template("acct_info.html", user_info=user_info)
 
 @app.route("/list")
 def show_list():

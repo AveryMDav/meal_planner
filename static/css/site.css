@@ -6,7 +6,7 @@
     color: white;
 }
 
-.container {
+.container-fluid {
     margin-top: 2%;
 }
 
@@ -38,3 +38,11 @@ body {
 .col-sm-2{
     border: solid;
 }
+
+#item-search {
+    height: 750px;
+    margin: 0px auto;
+    overflow: auto;
+}
+
+

@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Account Info{% endblock title %}
 {% block body %}
-    <h1>This is your account info</h1>
+    <h1>Account Info</h1>
+    <div class="container">
+            {% for key,value in user_info.items() %}
+                <div><p>{{key}}:    {{value}}</p></div>
+            {% endfor %}
+    </div>
 {% endblock body %}
