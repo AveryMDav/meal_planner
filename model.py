@@ -63,7 +63,7 @@ class scheduled_item(db.Model):
     recipes = db.relationship("recipes", backref=db.backref("scheduled_items", order_by=scheduled_item_id))
 
     def __repr__(self):
-        return f"<scheduled_item day={self.meal_day} type={self.meal_type} meal={self.base_food_id}{self.recipes_id}>"
+        return f"<scheduled_item day={self.meal_day} type={self.meal_type} meal={self.base_food_id} recipe={self.recipes_id}>"
 
 class recipes(db.Model):
     """Holds all recipes saved in database"""

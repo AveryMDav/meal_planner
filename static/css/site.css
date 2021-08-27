@@ -45,4 +45,6 @@ body {
     overflow: auto;
 }
 
-
+.row {
+    border: solid;
+}

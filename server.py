@@ -1,7 +1,7 @@
-from model import connect_to_db, db, user
-from util import items_info
+from model import connect_to_db, db, scheduled_item, user, weekly_planner
+from util import items_info, calculate_cal
 from flask import Flask, render_template, redirect, flash, session, request
-from datetime import date as dt
+from datetime import date, datetime, timedelta
 import jinja2
 
 app = Flask(__name__)
@@ -48,17 +48,26 @@ def show_recipes():
     return render_template("recipes.html", recipe_list=recipe_list)
 
 @app.route("/homepage", methods=["POST", "GET"])
-def show_homepage(info=None):
+def show_homepage():
     if "user" not in session:
         return redirect("/")
-    
-    if request.method == "POST":
-        info = items_info(request.form["meal"])
-        
+
+    info = None
+
+    if request.method == "POST" and "form-submit" in request.form:
+        info = items_info(request.form["search"])
+
     result = info
 
-    today = dt.today().strftime("%B %d, %Y")
-    day_of_week = dt.today().weekday()
+    today = date.today().strftime('%d/%b/%Y')
+    day_of_week = date.today().weekday()
+    dt = datetime.strptime(today, '%d/%b/%Y')
+    start = dt - timedelta(days=dt.weekday())
+    end = start + timedelta(days=6)
+
+    assigned_day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+    meal_types = ["Breakfast", "Lunch", "Dinner", "Snacks"]
 
     if day_of_week == 0:
             day_of_week = "Monday"
@@ -74,7 +83,18 @@ def show_homepage(info=None):
             day_of_week = "Saturday"
     else:
             day_of_week = "Sunday"
-    return render_template("homepage.html", today=today, day_of_week=day_of_week, result=result)
+    
+    if request.method == "POST" and "form-submit2" in request.form:
+        meal_item = scheduled_item(
+            meal_day = request.form["day"],
+            meal_type = request.form["meal"],
+            base_food_id = request.form[""],
+            weekly_planner_id = request.form[""],
+            recipes_id = request.form[""]
+        )
+        print(meal_item)
+
+    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), result=result, assigned_day=assigned_day, meal_types=meal_types)
 
 @app.route("/acct")
 def show_acct_info():

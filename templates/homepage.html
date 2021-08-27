@@ -5,10 +5,9 @@
     <div class="row">
         <div class="col-sm-3" id="item-search">
         <form method="POST">
-            <div class="mb-3">
-                <label for="meal" class="form-label">Add Meal</label>
-                <input type="text" class="form-control" id="meal" name="meal">
-                <input type="submit" value="Add">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="search" name="search" placeholder="add meal">
+                <input class="btn btn-outline-secondary" type="submit" id="button-addon2" value="Search" name="form-submit">
             </div>
         </form>
         {% if result %}
@@ -19,17 +18,32 @@
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add To Planner</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form></form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
+                        <form method="POST">
+                            <div class="modal-body">
+                                {% for day in assigned_day %}
+                                <div class="form-check">
+                                    <label for="day" class="form-check-label">{{day}}</label>
+                                    <input type="radio" class="form-check-input" id="flexRadioDefault1" name="day" value="{{day}}" {% if "Monday" == day %}checked{% endif %}>  
+                                </div>
+                                {% endfor %}
+                                <br>
+                                {% for meal in meal_types %}
+                                <div class="form-check">
+                                    <label for="meal" class="form-check-label">{{meal}}</label>
+                                    <input type="radio" class="form-check-input" id="flexRadioDefault1" name="meal" value="{{meal}}" {% if "Breakfast" == meal %}checked{% endif %}>  
+                                </div>
+                                {% endfor %}
+                                <br>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" id="weight" placeholder="Weight" name="weight">
+                                    <span class="input-group-text">grams</span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" name="form-submit2" value ="Add to Planner" class="btn btn-primary">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -40,30 +54,14 @@
         <div class="col">
             <div class="col">
             <h2>{{day_of_week}}</h2>
-            <h2>{{today}}</h2>
+            <h2>{{start}} - {{end}}</h2>
             </div>
             <div class="row align-items-start">
+                {% for day in assigned_day %}
                 <div class="row">
-                    <h3>monday</h3>
+                    <h3>{{day}}</h3>
                 </div>
-                <div class="row">
-                    <h3>tuesday</h3>
-                </div>
-                <div class="row">
-                    <h3>wednesday</h3>
-                </div>
-                <div class="row">
-                    <h3>thursday</h3>
-                </div>
-                <div class="row">
-                    <h3>friday</h3>
-                </div>
-                <div class="row">
-                    <h3>saturday</h3>
-                </div>
-                <div class="row">
-                    <h3>sunday</h3>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

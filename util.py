@@ -12,3 +12,7 @@ def items_info(search):
                           [int(cal['food']['nutrients']['ENERC_KCAL']) for cal in item['hints']]))
     
     return info
+
+def calculate_cal(kcal):
+    cal = kcal
+    return cal
