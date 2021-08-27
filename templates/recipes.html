@@ -5,12 +5,16 @@
 {% block body %}
 <h1>Recipes</h1>
     <div class="row">
-        {% for recipe in recipe_list %}
-            <div class="col-xs-12 col-sm-6">
-                <div>
-                    <h3>{{recipe}}</h3>
+        <div class="col-xs-12 col-sm-6">
+            {% for recipe in recipe_names %}
+                <h3>{{recipe}}</h3>
+            {% endfor %}
+            {% for direct in directions %}
                 </div>
+                    <p>{{direct}}</p>
+                <div>
+            {% endfor %}
             </div>
-        {% endfor %}
+
     </div>
 {% endblock body %}

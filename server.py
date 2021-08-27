@@ -1,4 +1,4 @@
-from model import connect_to_db, db, scheduled_item, user, weekly_planner
+from model import connect_to_db, db, recipes, scheduled_item, user, weekly_planner
 from util import items_info, calculate_cal
 from flask import Flask, render_template, redirect, flash, session, request
 from datetime import date, datetime, timedelta
@@ -15,6 +15,7 @@ app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 @app.route("/")
 def show_front_page():
+    """loads front page of app"""
 
     return render_template("frontpage.html")
 
@@ -44,8 +45,11 @@ def show_recipes():
     if "user" not in session:
         return redirect("/")
 
-    recipe_list = ['recipe', 'recipe', 'recipe','recipe','recipe','recipe','recipe','recipe','recipe','recipe']
-    return render_template("recipes.html", recipe_list=recipe_list)
+    all_recipes = recipes.query.all()
+    recipe_names = [object.recipe_name for object in all_recipes]
+    directions = [object.directions for object in all_recipes]
+
+    return render_template("recipes.html", recipe_names=recipe_names, directions=directions)
 
 @app.route("/homepage", methods=["POST", "GET"])
 def show_homepage():
