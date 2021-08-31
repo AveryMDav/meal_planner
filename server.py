@@ -16,6 +16,7 @@ app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 @app.route("/")
 def show_front_page():
     """loads front page of app"""
+
     if "user" in session:
         return redirect("/homepage")
 
@@ -44,6 +45,7 @@ def process_log_in():
 @app.route("/recipes")
 def show_recipes():
     """Return page showing all recipes contained in database"""
+
     if "user" not in session:
         return redirect("/")
 
@@ -61,6 +63,8 @@ def show_homepage():
         return redirect("/")
     #makes sure the user is logged in before accessing website
 
+    print(session["user"])
+
 
     today = date.today().strftime('%b/%d/%Y')
     dt = datetime.strptime(today, '%b/%d/%Y')
@@ -68,8 +72,8 @@ def show_homepage():
     end = start + timedelta(days=6)
     #creates logic for the weekly planner assigned week
 
-    current_planner = weekly_planner.query.filter_by(date=start).first()
     current_user = user.query.filter_by(email=session["user"]).first()
+    current_planner = weekly_planner.query.filter_by(user_id=current_user.user_id).first()
 
     if current_planner:
         pass
@@ -178,11 +182,15 @@ def show_homepage():
             Sunday_total = Sunday_total + meal_info[3]
     #calculate total calorie count for each day
 
+    daily_cal_goal = db.session.query(user.dcg).filter(user.email == session['user']).first()
 
-    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, planner_items=cal_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total)
+
+    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, planner_items=cal_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total, daily_cal_goal=daily_cal_goal[0])
 
 @app.route("/acct")
 def show_acct_info():
+    """lists out account info for user, allows them to update their information, and change their password"""
+
     if "user" not in session:
         return redirect("/")
 
@@ -194,7 +202,8 @@ def show_acct_info():
         "Email": f"{user_search.email}",
         "Phone Number": f"{user_search.phone_number}",
         "Weight": f"{user_search.weight}",
-        "Daily Calorie Goal": f"{user_search.dcg}"
+        "Daily Calorie Goal": f"{user_search.dcg}",
+        "account number": f"{user_search.user_id}"
 
     }
 
@@ -207,8 +216,23 @@ def show_list():
     if "user" not in session:
         return redirect("/")
 
-    shopping_list = ['apple', 'orange', 'grape', 'watermelon']
-    return render_template("shopping_list.html", shopping_list=shopping_list)
+    today = date.today().strftime('%b/%d/%Y')
+    dt = datetime.strptime(today, '%b/%d/%Y')
+    start = dt - timedelta(days=dt.weekday())
+
+    current_user = user.query.filter_by(email = session["user"]).first()
+    current_planner = weekly_planner.query.filter_by(user_id = current_user.user_id, date=start.strftime('%b/%d/%Y')).first()
+    
+    planner_items = db.session.query(base_food.item_name).join(scheduled_item).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+
+    shopping_list = []
+
+    for item in planner_items:
+        shopping_list.append(item[0])
+    
+    print(shopping_list)
+
+    return render_template("shopping_list.html", shopping_list=set(shopping_list))
 
 @app.route("/sign_up")
 def show_sign_up():

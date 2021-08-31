@@ -3,7 +3,32 @@
 {% block title %}Recipes{% endblock title %}
 
 {% block body %}
-<h1>Recipes</h1>
+<div class="row">
+        <h1>Recipes</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#recipe" id="add_recipe">Add Recipe</button>
+        <div class="modal fade" id="recipe" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST">
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" id="recipe_name" placeholder="Recipe Name" name="recipe_name">
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Ingredient" aria-label="ingredient">
+                                <span class="input-group-text">Quantity:<input type="number" class="form-control-sm" aria-label="quantity" id="quantity-label"></span>
+                            </div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#recipe" id="add_recipe">+</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <input type="submit" name="form-submit" value ="Add to Planner" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
     <div class="row">
         <div class="col-xs-12 col-sm-6">
             {% for recipe in all_recipes %}

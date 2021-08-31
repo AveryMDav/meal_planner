@@ -13,7 +13,7 @@
         {% if info %}
         {% for food_name, cal in info.items() %}
         <div class="col">
-            <p>{{food_name}}  {{cal}}kcal</p>
+            <p>{{food_name}}:  {{cal}}kcal per 100g</p>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#item-{{loop.index}}">+</button>
             <div class="modal fade" id="item-{{loop.index}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -61,14 +61,14 @@
             <div class="row align-items-start">
                 {% for day in assigned_day %}
                 <div class="row">
-                    <h3>{{day}}</h3>
+                    <h3>{{day}}:</h3>
                     {% for meal in meal_types %}
                     <div class="col">
                         <h7>{{meal}}</h7>
                         {% for planned_meal in planner_items %}
                             <ul>
                             {% if planned_meal[0] == day and planned_meal[1] == meal %}
-                                <li>{{planned_meal[2]}} {{planned_meal[3]}} </li>
+                                <li>{{planned_meal[2]}}: {{planned_meal[3]}}cal</li>
                             {% endif %}
                             </ul>
                         {% endfor %}
@@ -76,13 +76,13 @@
                     {% endfor %}
                     <div class="col">
                         <h7>Total</h7>
-                        {% if day == "Monday" %}<p>{{Monday_total}}</p>
-                        {% elif day == "Tuesday" %}<p>{{Tuesday_total}}</p>
-                        {% elif day == "Wednesday" %}<p>{{Wednesday_total}}</p>
-                        {% elif day == "Thursday" %}<p>{{Thursday_total}}</p>
-                        {% elif day == "Friday" %}<p>{{Friday_total}}</p>
-                        {% elif day == "Saturday" %}<p>{{Saturday_total}}</p>
-                        {% else %}<p>{{Sunday_total}}</p>{% endif %}
+                        {% if day == "Monday" %}<p>{{Monday_total}}cal / {{daily_cal_goal}}cal</p>
+                        {% elif day == "Tuesday" %}<p>{{Tuesday_total}}cal / {{daily_cal_goal}}cal</p>
+                        {% elif day == "Wednesday" %}<p>{{Wednesday_total}}cal / {{daily_cal_goal}}cal</p>
+                        {% elif day == "Thursday" %}<p>{{Thursday_total}}cal / {{daily_cal_goal}}cal</p>
+                        {% elif day == "Friday" %}<p>{{Friday_total}}cal / {{daily_cal_goal}}cal</p>
+                        {% elif day == "Saturday" %}<p>{{Saturday_total}}cal / {{daily_cal_goal}}cal</p>
+                        {% else %}<p>{{Sunday_total}}cal / {{daily_cal_goal}}cal</p>{% endif %}
                     </div>
                 </div>
                 {% endfor %}

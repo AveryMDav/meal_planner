@@ -27,10 +27,6 @@ body {
     margin-top: 40px;
 }
 
-.col{
-    border: solid;
-}
-
 .col-sm-3{
     border: solid;
 }
@@ -45,8 +41,11 @@ body {
     overflow: auto;
 }
 
-.row {
-    border: solid;
+#add_recipe{
+    margin-top: 10px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h7{

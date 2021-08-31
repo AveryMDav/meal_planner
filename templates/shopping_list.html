@@ -5,11 +5,18 @@
 <div class="container">
     <div class="row">
         {% for item in shopping_list %}
+            <div class="row" id="shopping_list">
                 <div class='form-check'>
                     <input class="form-check-input" type="checkbox" value="flexCheckDefault">
                     <label class="form-check-label" for="flexCheckDefault">{{item}}</label>
                 </div>
+            </div>
         {% endfor %}
+        {% if shopping_list == [] %}
+        <div class="row">
+            <p>Your shopping list is empty</p>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock body %}

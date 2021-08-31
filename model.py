@@ -74,8 +74,11 @@ class recipes(db.Model):
     __tablename__ = "recipes"
 
     recipes_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False) 
     recipe_name = db.Column(db.String(60), nullable=False)
     directions = db.Column(db.Text, nullable=False)
+
+    users = db.relationship("user", backref=db.backref("recipes", order_by=recipes_id))
 
     def __repr__(self):
         return f"<recipes recipe={self.recipe_name}>"
