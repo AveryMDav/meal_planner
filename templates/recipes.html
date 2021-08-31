@@ -6,13 +6,9 @@
 <h1>Recipes</h1>
     <div class="row">
         <div class="col-xs-12 col-sm-6">
-            {% for recipe in recipe_names %}
-                <h3>{{recipe}}</h3>
-            {% endfor %}
-            {% for direct in directions %}
-                </div>
-                    <p>{{direct}}</p>
-                <div>
+            {% for recipe in all_recipes %}
+                <h3>{{recipe.recipe_name}}</h3>
+                <p>{{recipe.directions}}</p>
             {% endfor %}
             </div>
 

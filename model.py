@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import date, datetime, timedelta
 
 db = SQLAlchemy()
 
@@ -28,6 +29,7 @@ class weekly_planner(db.Model):
 
     weekly_planner_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=date.today().strftime('%d/%b/%Y'))
 
     users = db.relationship("user", backref=db.backref("weekly_planner", order_by=weekly_planner_id))
 

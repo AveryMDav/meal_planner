@@ -10,20 +10,22 @@
                 <input class="btn btn-outline-secondary" type="submit" id="button-addon2" value="Search" name="form-submit">
             </div>
         </form>
-        {% if result %}
-        {% for key, value in result.items() %}
+        {% if info %}
+        {% for food_name, cal in info.items() %}
         <div class="col">
-            <p>{{key}}  {{value}}kcal</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+</button>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <p>{{food_name}}  {{cal}}kcal</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#item-{{loop.index}}">+</button>
+            <div class="modal fade" id="item-{{loop.index}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="POST">
+                            <input type="hidden" value="{{food_name}}" name="name">
+                            <input type="hidden" value="{{cal}}" name="cal">
                             <div class="modal-body">
                                 {% for day in assigned_day %}
                                 <div class="form-check">
                                     <label for="day" class="form-check-label">{{day}}</label>
-                                    <input type="radio" class="form-check-input" id="flexRadioDefault1" name="day" value="{{day}}" {% if "Monday" == day %}checked{% endif %}>  
+                                    <input type="radio" class="form-check-input" id="flexRadioDefault1" name="day" value="{{day}}" {% if "Monday" == day %}checked{% endif %}>
                                 </div>
                                 {% endfor %}
                                 <br>
@@ -60,6 +62,18 @@
                 {% for day in assigned_day %}
                 <div class="row">
                     <h3>{{day}}</h3>
+                    {% for meal in meal_types %}
+                    <div class="col">
+                        <h7>{{meal}}</h7>
+                        <ul>
+                        {% for planned_meal, planned_meal_values in planner_items_dict.items() %}
+                            {% if planned_meal_values[1] == day and planned_meal_values[2] == meal%}
+                                <li>{{planned_meal}} {{planned_meal_values[0]}}</li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
                 </div>
                 {% endfor %}
             </div>
