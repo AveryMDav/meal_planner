@@ -14,11 +14,13 @@
                             <div class="input-group mb-3">
                                 <input type="number" class="form-control" id="recipe_name" placeholder="Recipe Name" name="recipe_name">
                             </div>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Ingredient" aria-label="ingredient">
-                                <span class="input-group-text">Quantity:<input type="number" class="form-control-sm" aria-label="quantity" id="quantity-label"></span>
+                            <div class="row" id="new_ingredient">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Ingredient" aria-label="ingredient">
+                                    <span class="input-group-text">Quantity:<input type="number" class="form-control-sm" aria-label="quantity" id="quantity-label"></span>
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#recipe" id="add_recipe">+</button>
+                            <button type="button" class="btn btn-primary" id="add_recipe" onclick="add_ingredient()">+</button>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -36,6 +38,6 @@
                 <p>{{recipe.directions}}</p>
             {% endfor %}
             </div>
-
     </div>
+<script src="/static/util.js"></script>
 {% endblock body %}
