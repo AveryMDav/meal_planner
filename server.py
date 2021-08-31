@@ -1,4 +1,3 @@
-from werkzeug.wrappers.request import PlainRequest
 from model import connect_to_db, db, recipes, scheduled_item, user, weekly_planner, base_food
 from util import items_info, calculate_cal
 from flask import Flask, render_template, redirect, flash, session, request
@@ -82,6 +81,7 @@ def show_homepage():
         
         db.session.add(planner)
         db.session.commit()
+        return redirect("/homepage")
     #creates the weekly planner for the current week
 
     assigned_day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -125,6 +125,7 @@ def show_homepage():
         meal_item = scheduled_item(
             meal_day = request.form["day"],
             meal_type = request.form["meal"],
+            weight = request.form["weight"],
             base_food_id = name_query.base_food_id,
             weekly_planner_id = current_planner.weekly_planner_id
         )
@@ -138,19 +139,47 @@ def show_homepage():
         info = items_info(request.form["search"])
     #Uses Edamam API to search for base foods
 
-    planner_items = scheduled_item.query.filter_by(weekly_planner_id=current_planner.weekly_planner_id).all()
-    planner_items_dict = {}
+    planner_items = db.session.query(scheduled_item.meal_day, scheduled_item.meal_type, base_food.item_name, base_food.calorie_count, scheduled_item.weight).join(base_food).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+    #query for info from the scheduled items table to populate weekly planner
 
-    for item in planner_items:
-        base_food_query = base_food.query.filter_by(base_food_id=item.base_food_id).first()
-        food_name = base_food_query.item_name
-        food_cal = base_food_query.calorie_count
-        planner_items_dict[food_name] = food_cal, item.meal_day, item.meal_type
-    
-    for key, value in planner_items_dict.items():
-        print(key, value[0], value[1], value[2])
+    cal_planner_items = []
 
-    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, planner_items=planner_items, planner_items_dict=planner_items_dict)
+    for tuple_to_list in planner_items:
+        tuple_to_list = list(tuple_to_list)
+        cal = int(calculate_cal(tuple_to_list[3], tuple_to_list[4]))
+        tuple_to_list.pop()
+        tuple_to_list.pop()
+        tuple_to_list.append(cal)
+        cal_planner_items.append(tuple_to_list)
+    #calculating the calorie count based on weight in grams of meal
+
+    Monday_total = 0
+    Tuesday_total = 0
+    Wednesday_total = 0
+    Thursday_total = 0
+    Friday_total = 0
+    Saturday_total = 0
+    Sunday_total = 0
+
+    for meal_info in cal_planner_items:
+        if meal_info[0] == "Monday":
+            Monday_total = Monday_total + meal_info[3]
+        elif meal_info[0] == "Tuesday":
+            Tuesday_total = Tuesday_total + meal_info[3]
+        elif meal_info[0] == "Wednesday":
+            Wednesday_total = Wednesday_total + meal_info[3]
+        elif meal_info[0] == "Thursday":
+            Thursday_total = Thursday_total + meal_info[3]
+        elif meal_info[0] == "Friday":
+            Friday_total = Friday_total + meal_info[3]
+        elif meal_info[0] == "Saturday":
+            Saturday_total = Saturday_total + meal_info[3]
+        else:
+            Sunday_total = Sunday_total + meal_info[3]
+    #calculate total calorie count for each day
+
+
+    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, planner_items=cal_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total)
 
 @app.route("/acct")
 def show_acct_info():

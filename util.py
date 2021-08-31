@@ -13,6 +13,6 @@ def items_info(search):
     
     return info
 
-def calculate_cal(kcal):
-    cal = kcal
+def calculate_cal(kcal, weight):
+    cal = (kcal / 100) * weight
     return cal

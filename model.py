@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import date, datetime, timedelta
+from datetime import date
 
 db = SQLAlchemy()
 
@@ -56,6 +56,7 @@ class scheduled_item(db.Model):
     scheduled_item_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     meal_day = db.Column(db.String(10), nullable=False)
     meal_type = db.Column(db.String(10), nullable=False)
+    weight = db.Column(db.Integer, nullable=False)
     base_food_id = db.Column(db.Integer, db.ForeignKey('base_foods.base_food_id'))
     weekly_planner_id = db.Column(db.Integer, db.ForeignKey('weekly_planner.weekly_planner_id'), nullable=False)
     recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'))

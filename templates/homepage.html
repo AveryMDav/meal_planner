@@ -65,15 +65,25 @@
                     {% for meal in meal_types %}
                     <div class="col">
                         <h7>{{meal}}</h7>
-                        <ul>
-                        {% for planned_meal, planned_meal_values in planner_items_dict.items() %}
-                            {% if planned_meal_values[1] == day and planned_meal_values[2] == meal%}
-                                <li>{{planned_meal}} {{planned_meal_values[0]}}</li>
+                        {% for planned_meal in planner_items %}
+                            <ul>
+                            {% if planned_meal[0] == day and planned_meal[1] == meal %}
+                                <li>{{planned_meal[2]}} {{planned_meal[3]}} </li>
                             {% endif %}
+                            </ul>
                         {% endfor %}
-                        </ul>
                     </div>
                     {% endfor %}
+                    <div class="col">
+                        <h7>Total</h7>
+                        {% if day == "Monday" %}<p>{{Monday_total}}</p>
+                        {% elif day == "Tuesday" %}<p>{{Tuesday_total}}</p>
+                        {% elif day == "Wednesday" %}<p>{{Wednesday_total}}</p>
+                        {% elif day == "Thursday" %}<p>{{Thursday_total}}</p>
+                        {% elif day == "Friday" %}<p>{{Friday_total}}</p>
+                        {% elif day == "Saturday" %}<p>{{Saturday_total}}</p>
+                        {% else %}<p>{{Sunday_total}}</p>{% endif %}
+                    </div>
                 </div>
                 {% endfor %}
             </div>
