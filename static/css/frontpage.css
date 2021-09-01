@@ -1,13 +1,13 @@
 body {
-    background: url("/static/img/frontpage.jpg");
+    background: url("/static/img/frontpage-3.jpg");
     background-size: cover;
 
     color: white;
     text-align: center;
-  }
+}
 
 .site-wrapper {
-    margin-top: 150px;
+    margin-top: 75px;
     display: table;
     width: 400px;
     height: 250px;
@@ -17,8 +17,7 @@ body {
 
 .site-wrapper-inner {
     display: table-cell;
-    background-color: black;
+    background-color: #9d5d43;
     vertical-align: bottom;
-    opacity: 50%;
     padding: 10px;
 }

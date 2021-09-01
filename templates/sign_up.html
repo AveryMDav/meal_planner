@@ -1,46 +1,52 @@
-{% extends 'base.html' %}
-
-{% block title %}Sign Up{% endblock title %}
-
-{% block body %}
-<div class="form">
-    <form method="POST">
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
-        </div>
-        <div class="mb-3">
-            <label for="first-Name" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="first-Name" name="first-name">
-        </div>
-        <div class="mb-3"
-            <label for="last-Name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="last-Name" name="last-name">
-        </div>
-        <div class="mb-3"
-            <label for="phonenumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="phonenumber" name="phonenumber">
-        </div>
-        <div class="mb-3"
-            <label for="weight" class="form-label">Weight</label>
-            <input type="number" class="form-control" id="weight" name="weight">
-        </div>
-        <div class="mb-3"
-            <label for="goal" class="form-label">Daily Calorie Goal</label>
-            <input type="number" class="form-control" id="goal" name="goal">
-        </div>
-        <div class="mb-3"
-            <label for="reminders" class="form-check-label">Receive Meal Reminders</label>
-            <input type="checkbox" class="form-check-input" id="reminders">
-        </div>
-        <div class="mb-3">
-            <input type="submit" value="Submit">
-        </div>
-    </form>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/site.css">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="form">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <div class="mb-3">
+                <label for="first-Name" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="first-Name" name="first-name">
+            </div>
+            <div class="mb-3"
+                <label for="last-Name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="last-Name" name="last-name">
+            </div>
+            <div class="mb-3"
+                <label for="phonenumber" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phonenumber" name="phonenumber">
+            </div>
+            <div class="mb-3"
+                <label for="weight" class="form-label">Weight</label>
+                <input type="number" class="form-control" id="weight" name="weight">
+            </div>
+            <div class="mb-3"
+                <label for="goal" class="form-label">Daily Calorie Goal</label>
+                <input type="number" class="form-control" id="goal" name="goal">
+            </div>
+            <div class="mb-3"
+                <label for="reminders" class="form-check-label">Receive Meal Reminders</label>
+                <input type="checkbox" class="form-check-input" id="reminders">
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+</body>

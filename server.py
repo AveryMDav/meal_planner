@@ -1,4 +1,4 @@
-from model import connect_to_db, db, recipes, scheduled_item, user, weekly_planner, base_food
+from model import connect_to_db, db, recipe_ingredients, recipes, scheduled_item, user, weekly_planner, base_food
 from util import items_info, calculate_cal
 from flask import Flask, render_template, redirect, flash, session, request
 from datetime import date, datetime, timedelta
@@ -13,7 +13,7 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
-@app.route("/")
+@app.route("/frontpage")
 def show_front_page():
     """loads front page of app"""
 
@@ -22,7 +22,7 @@ def show_front_page():
 
     return render_template("frontpage.html")
 
-@app.route("/", methods=["POST"])
+@app.route("/frontpage", methods=["POST"])
 def process_log_in():
     """logs user into session"""
 
@@ -37,19 +37,49 @@ def process_log_in():
                 return redirect("/homepage")
             else:
                 flash("Incorrect Password")
-                return redirect("/")
+                return redirect("/frontpage")
         else:
             flash("Email not found")
-            return redirect("/")
+            return redirect("/frontpage")
 
-@app.route("/recipes")
+@app.route("/recipes", methods=["POST", "GET"])
 def show_recipes():
     """Return page showing all recipes contained in database"""
 
     if "user" not in session:
-        return redirect("/")
+        return redirect("/frontpage")
 
-    all_recipes = recipes.query.all()
+    current_user = user.query.filter_by(email=session["user"]).first()
+    
+    if request.method == "POST":
+        new_recipe = recipes(
+            user_id = current_user.user_id,
+            recipe_name = request.form["recipe_name"],
+            directions = request.form["directions"]
+        )
+    
+        print(new_recipe.recipe_name, new_recipe.directions)
+
+        new_ingredients = []
+        quantity_list = []
+
+        for key, value in request.form.items():
+            if "ingredient" in key:
+                new_ingredients.append(value)
+            if "quantity" in key:
+                quantity_list.append(value)
+        
+        ingredients = zip(new_ingredients, quantity_list)
+
+        for item in ingredients:
+            new_ingredients = recipe_ingredients(
+                quantity = item[1],
+                name = item[0],
+                recipes_id = recipes.query.filter_by(recipe_name=request.form["recipe_name"]).first()
+            )
+
+
+    all_recipes = recipes.query.filter_by(user_id=current_user.user_id).all()
     recipe_names = [object.recipe_name for object in all_recipes]
     directions = [object.directions for object in all_recipes]
 
@@ -60,10 +90,8 @@ def show_homepage():
     """Get returns the users weekly planner"""
 
     if "user" not in session:
-        return redirect("/")
+        return redirect("/frontpage")
     #makes sure the user is logged in before accessing website
-
-    print(session["user"])
 
 
     today = date.today().strftime('%b/%d/%Y')
@@ -192,7 +220,7 @@ def show_acct_info():
     """lists out account info for user, allows them to update their information, and change their password"""
 
     if "user" not in session:
-        return redirect("/")
+        return redirect("/frontpage")
 
 
     user_search = user.query.filter_by(email=session["user"]).first()
@@ -202,19 +230,36 @@ def show_acct_info():
         "Email": f"{user_search.email}",
         "Phone Number": f"{user_search.phone_number}",
         "Weight": f"{user_search.weight}",
-        "Daily Calorie Goal": f"{user_search.dcg}",
-        "account number": f"{user_search.user_id}"
-
+        "Daily Calorie Goal": f"{user_search.dcg}"
     }
 
     return render_template("acct_info.html", user_info=user_info)
+
+@app.route("/update")
+def update_acct_info():
+    """allows user to update their account information"""
+
+    if "user" not in session:
+        return redirect("/frontpage")
+    
+    user_search = user.query.filter_by(email=session["user"]).first()
+
+    user_info = {
+        "Name": f"{user_search.first_name} {user_search.last_name}",
+        "Email": f"{user_search.email}",
+        "Phone Number": f"{user_search.phone_number}",
+        "Weight": f"{user_search.weight}",
+        "Daily Calorie Goal": f"{user_search.dcg}"
+    }
+
+    return render_template("update_acct_info.html", user_info=user_info)
 
 @app.route("/list")
 def show_list():
     """show all ingredients needed for recipes in weekly planner"""
 
     if "user" not in session:
-        return redirect("/")
+        return redirect("/frontpage")
 
     today = date.today().strftime('%b/%d/%Y')
     dt = datetime.strptime(today, '%b/%d/%Y')
@@ -270,7 +315,7 @@ def process_sign_up():
             db.session.add(new_user)
             db.session.commit()
             flash("Sign Up Successful")
-            return redirect("/")
+            return redirect("/frontpage")
 
 @app.route("/log_out")
 def log_out():
@@ -278,7 +323,7 @@ def log_out():
 
     session.pop("user")
     flash("Logged Out")
-    return redirect("/")
+    return redirect("/frontpage")
 
 
 

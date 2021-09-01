@@ -75,26 +75,26 @@ class recipes(db.Model):
 
     recipes_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False) 
-    recipe_name = db.Column(db.String(60), nullable=False)
+    recipe_name = db.Column(db.String(60), nullable=False, unique=True)
     directions = db.Column(db.Text, nullable=False)
+    cal_per_serving = db.Column(db.Integer)
 
     users = db.relationship("user", backref=db.backref("recipes", order_by=recipes_id))
 
     def __repr__(self):
         return f"<recipes recipe={self.recipe_name}>"
 
-class recipes_food(db.Model):
+class recipe_ingredients(db.Model):
     """connects the recipes and base_food tables"""
 
-    __tablename__ = "recipes-food"
+    __tablename__ = "recipes-ingredients"
 
     recipes_food_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
-    base_food_id = db.Column(db.Integer, db.ForeignKey('base_foods.base_food_id'), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
     recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'), nullable=False)
 
     recipes = db.relationship("recipes", backref=db.backref("recipes-food", order_by=recipes_food_id))
-    base_food = db.relationship("base_food", backref=db.backref("recipes-food", order_by=recipes_food_id))
 
     def __repr__(self):
         return f"<recipe-base_food base food id={self.base_food_id} recipe id={self.recipes_id} quantity={self.quantity}>"

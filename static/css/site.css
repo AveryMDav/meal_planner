@@ -1,3 +1,12 @@
+body {
+    background: url("/static/img/background.jpg");
+    background-size: cover;
+}
+
+p {
+    color: black;
+}
+
 #nav-bar {
     background-color: black;
 }
@@ -6,8 +15,19 @@
     color: white;
 }
 
-.container-fluid {
-    margin-top: 2%;
+#planner-background {
+    margin-top: 10px;
+    pointer-events: none;
+    background-color: grey;
+    position: absolute;
+    width: 100%;
+    height: inherit;
+    z-index: -100;
+}
+
+#button-addon2 {
+    color: white;
+    background-color: darkslategray;
 }
 
 .form-check {
@@ -27,14 +47,6 @@ body {
     margin-top: 40px;
 }
 
-.col-sm-3{
-    border: solid;
-}
-
-.col-sm-2{
-    border: solid;
-}
-
 #item-search {
     height: 750px;
     margin: 0px auto;
@@ -50,4 +62,12 @@ body {
 
 h7{
     border-bottom: 1px solid black;
+}
+
+#search, #button-addon2 {
+    margin-top: 10px
+}
+
+#account_info {
+    margin-top: 35px;
 }
