@@ -60,25 +60,25 @@
         {% endif %}
         </div>
         <div class="col" id="meal-planner-grid">
-            <div class="row align-items-start">
+            <div class="row align-items-start" id="day-row">
                 {% for day in assigned_day %}
                     <h3>{{day}}:</h3>
                     {% for meal in meal_types %}
-                    <div class="col">
-                        <h7>{{meal}}</h7>
-                        {% for planned_meal in planner_items %}
-                            {% if planned_meal[0] == day and planned_meal[1] == meal %}
-                            <div class="row">
-                                <div class="col">
-                                    {{planned_meal[2]}}:
+                        <div class="col" id="full-meal">
+                            <h7>{{meal}}</h7>
+                            {% for planned_meal in planner_items %}
+                                {% if planned_meal[0] == day and planned_meal[1] == meal %}
+                                <div class="row" id="meal-item">
+                                    <div class="col">
+                                        {{planned_meal[2]}}
+                                    </div>
+                                    <div class="col">
+                                        {{planned_meal[3]}}cal
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    {{planned_meal[3]}}cal
-                                </div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     {% endfor %}
                     <div class="col">
                         <h7>Total</h7>

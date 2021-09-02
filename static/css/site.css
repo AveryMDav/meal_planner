@@ -85,3 +85,13 @@ h7{
 #update-acct-btn {
     margin-bottom: 10px;
 }
+
+#meal-item {
+    border-bottom: 1px solid black;
+}
+
+#meal-planner-grid {
+    height: 750px;
+    margin: 0px auto;
+    overflow: auto;
+}

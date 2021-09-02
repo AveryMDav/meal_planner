@@ -13,7 +13,7 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
-@app.route("/frontpage")
+@app.route("/")
 def show_front_page():
     """loads front page of app"""
 
@@ -22,7 +22,7 @@ def show_front_page():
 
     return render_template("frontpage.html")
 
-@app.route("/frontpage", methods=["POST"])
+@app.route("/", methods=["POST"])
 def process_log_in():
     """logs user into session"""
 
@@ -37,21 +37,22 @@ def process_log_in():
                 return redirect("/homepage")
             else:
                 flash("Incorrect Password")
-                return redirect("/frontpage")
+                return redirect("/")
         else:
             flash("Email not found")
-            return redirect("/frontpage")
+            return redirect("/")
 
 @app.route("/recipes", methods=["POST", "GET"])
 def show_recipes():
     """Return page showing all recipes contained in database"""
 
     if "user" not in session:
-        return redirect("/frontpage")
+        return redirect("/")
 
     current_user = user.query.filter_by(email=session["user"]).first()
-    
+
     if request.method == "POST":
+
         new_recipe = recipes(
             user_id = current_user.user_id,
             recipe_name = request.form["recipe_name"],
@@ -62,6 +63,7 @@ def show_recipes():
         db.session.add(new_recipe)
         db.session.commit()
 
+        new_recipe_id = new_recipe.recipes_id
         new_ingredients = []
         quantity_list = []
 
@@ -74,16 +76,14 @@ def show_recipes():
         ingredients = zip(new_ingredients, quantity_list)
 
         for item in ingredients:
-            new_ingredients = recipe_ingredients(
+            new_ingredient = recipe_ingredients(
                 quantity = item[1],
                 name = item[0],
-                recipes_id = recipes.query.filter_by(recipe_name=request.form["recipe_name"]).first()
+                recipes_id = new_recipe_id
             )
 
-            db.session.add(new_ingredients)
+            db.session.add(new_ingredient)
             db.session.commit()
-
-            print("success")
 
     
     all_recipes = recipes.query.filter_by(user_id=current_user.user_id).all()
@@ -97,7 +97,7 @@ def show_homepage():
     """Get returns the users weekly planner"""
 
     if "user" not in session:
-        return redirect("/frontpage")
+        return redirect("/")
     #makes sure the user is logged in before accessing website
 
 
@@ -227,7 +227,7 @@ def show_acct_info():
     """lists out account info for user, allows them to update their information, and change their password"""
 
     if "user" not in session:
-        return redirect("/frontpage")
+        return redirect("/")
 
 
     user_search = user.query.filter_by(email=session["user"]).first()
@@ -247,7 +247,7 @@ def update_acct_info():
     """allows user to update their account information"""
 
     if "user" not in session:
-        return redirect("/frontpage")
+        return redirect("/")
     
     user_search = user.query.filter_by(email=session["user"]).first()
 
@@ -266,7 +266,7 @@ def show_list():
     """show all ingredients needed for recipes in weekly planner"""
 
     if "user" not in session:
-        return redirect("/frontpage")
+        return redirect("/")
 
     today = date.today().strftime('%b/%d/%Y')
     dt = datetime.strptime(today, '%b/%d/%Y')
@@ -322,7 +322,7 @@ def process_sign_up():
             db.session.add(new_user)
             db.session.commit()
             flash("Sign Up Successful")
-            return redirect("/frontpage")
+            return redirect("/")
 
 @app.route("/log_out")
 def log_out():
@@ -330,7 +330,7 @@ def log_out():
 
     session.pop("user")
     flash("Logged Out")
-    return redirect("/frontpage")
+    return redirect("/")
 
 
 

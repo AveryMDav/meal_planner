@@ -18,7 +18,7 @@
                                 <div class="row" id="new_ingredient">
                                     <div class="input-group mb-3">
                                         <input type="text" class="form-control" placeholder="Ingredient" aria-label="ingredient" name="ingredient-1">
-                                        <span class="input-group-text">Quantity:<input type="number" class="form-control-sm" aria-label="quantity" id="quantity-label", name="quantity-1"></span>
+                                        <span class="input-group-text">Quantity:<input type="text" class="form-control-sm" aria-label="quantity" id="quantity-label", name="quantity-1"></span>
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-primary" id="add_recipe" onclick="add_ingredient()">+</button>
@@ -44,11 +44,13 @@
         </div>
 </div>
     <div class="row">
-        <div class="col-xs-12">
-            {% for recipe in all_recipes %}
-                <a href="/show_recipe">{{recipe.recipe_name}}<a>
-            {% endfor %}
+        {% for recipe in all_recipes %}
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <div>
+                    <h3><a href="/show_recipe">{{recipe.recipe_name}}</a></h3>
+                </div>
             </div>
+        {% endfor %}
     </div>
 <script src="/static/util.js"></script>
 {% endblock body %}
