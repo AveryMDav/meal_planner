@@ -78,7 +78,7 @@ def show_recipes():
                 recipes_id = recipes.query.filter_by(recipe_name=request.form["recipe_name"]).first()
             )
 
-
+    
     all_recipes = recipes.query.filter_by(user_id=current_user.user_id).all()
     recipe_names = [object.recipe_name for object in all_recipes]
     directions = [object.directions for object in all_recipes]

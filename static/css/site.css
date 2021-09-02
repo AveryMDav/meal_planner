@@ -15,19 +15,18 @@ p {
     color: white;
 }
 
-#planner-background {
-    margin-top: 10px;
-    pointer-events: none;
+#meal-planner-grid {
     background-color: grey;
-    position: absolute;
-    width: 100%;
-    height: inherit;
-    z-index: -100;
+    opacity: 85%;
 }
 
 #button-addon2 {
     color: white;
     background-color: darkslategray;
+}
+
+#current-week {
+    color: white;
 }
 
 .form-check {
@@ -51,6 +50,7 @@ body {
     height: 750px;
     margin: 0px auto;
     overflow: auto;
+    border-right: 1px solid black;
 }
 
 #add_recipe{

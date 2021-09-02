@@ -14,10 +14,3 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
-
-.site-wrapper-inner {
-    display: table-cell;
-    background-color: #9d5d43;
-    vertical-align: bottom;
-    padding: 10px;
-}
