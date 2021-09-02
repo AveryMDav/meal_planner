@@ -15,9 +15,13 @@ p {
     color: white;
 }
 
-#meal-planner-grid {
+#meal-planner-grid, #item-search{
     background-color: grey;
-    opacity: 85%;
+    border: 1px solid black;
+}
+
+#food-item {
+    color: white;
 }
 
 #button-addon2 {
@@ -25,7 +29,7 @@ p {
     background-color: darkslategray;
 }
 
-#current-week {
+#current-week, .title {
     color: white;
 }
 
@@ -38,7 +42,6 @@ body {
   }
 
 .form{
-    background-color: lightgray;
     width: 900px;
     margin-left: auto;
     margin-right: auto;
@@ -49,8 +52,7 @@ body {
 #item-search {
     height: 750px;
     margin: 0px auto;
-    overflow: auto;
-    border-right: 1px solid black;
+    overflow: auto;;
 }
 
 #add_recipe{
@@ -70,4 +72,16 @@ h7{
 
 #account_info {
     margin-top: 35px;
+    background-color: grey;
+    border: 1px solid black;
+    width: fit-content;
+}
+
+#user-information {
+    margin: 10px;
+    color: white;
+}
+
+#update-acct-btn {
+    margin-bottom: 10px;
 }

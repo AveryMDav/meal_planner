@@ -55,10 +55,12 @@ def show_recipes():
         new_recipe = recipes(
             user_id = current_user.user_id,
             recipe_name = request.form["recipe_name"],
-            directions = request.form["directions"]
+            directions = request.form["directions"],
+            cal_per_serving = request.form["serving_size"]
         )
     
-        print(new_recipe.recipe_name, new_recipe.directions)
+        db.session.add(new_recipe)
+        db.session.commit()
 
         new_ingredients = []
         quantity_list = []
@@ -77,6 +79,11 @@ def show_recipes():
                 name = item[0],
                 recipes_id = recipes.query.filter_by(recipe_name=request.form["recipe_name"]).first()
             )
+
+            db.session.add(new_ingredients)
+            db.session.commit()
+
+            print("success")
 
     
     all_recipes = recipes.query.filter_by(user_id=current_user.user_id).all()
