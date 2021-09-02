@@ -131,3 +131,19 @@ h7{
     margin-top: 50px;
     margin-bottom: 50px;
 }
+
+#shopping_list_container {
+    background-color: grey;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: darkred;
+    float: left;
+}
+
+#planner-container {
+    max-width: 1800px;
+}

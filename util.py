@@ -16,3 +16,8 @@ def items_info(search):
 def calculate_cal(kcal, weight):
     cal = (kcal / 100) * weight
     return cal
+
+
+def calculate_cal_per_serv(serv_size, cal_per_serv):
+    cal = cal_per_serv * serv_size
+    return cal

@@ -1,5 +1,5 @@
 from model import connect_to_db, db, recipe_ingredients, recipes, scheduled_item, user, weekly_planner, base_food
-from util import items_info, calculate_cal
+from util import items_info, calculate_cal, calculate_cal_per_serv
 from flask import Flask, render_template, redirect, flash, session, request
 from datetime import date, datetime, timedelta
 import jinja2
@@ -113,7 +113,7 @@ def show_recipe_info(recipes_id):
         recipe_meal = scheduled_item(
             meal_day = request.form["day"],
             meal_type = request.form["meal"],
-            serving_size = request.form["serving_size"],
+            serving_size = calculate_cal_per_serv(int(request.form["serving_size"]), int(recipe.cal_per_serving)),
             weekly_planner_id = current_planner.weekly_planner_id,
             recipes_id = recipe.recipes_id
         )
@@ -209,12 +209,26 @@ def show_homepage():
         info = items_info(request.form["search"])
     #Uses Edamam API to search for base foods
 
-    planner_items = db.session.query(scheduled_item.meal_day, scheduled_item.meal_type, base_food.item_name, base_food.calorie_count, scheduled_item.weight).join(base_food).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+    elif request.method == "POST" and "form-submit3" in request.form:
+        delete_target = db.session.query(scheduled_item).join(recipes).filter(recipes.recipe_name == request.form["name"]).first()
+
+        db.session.delete(delete_target)
+        db.session.commit()
+
+    elif request.method == "POST" and "form-submit4" in request.form:
+        delete_target = db.session.query(scheduled_item).join(base_food).filter(base_food.item_name == request.form["name"]).first()
+
+        db.session.delete(delete_target)
+        db.session.commit()
+
+    base_planner_items = db.session.query(scheduled_item.meal_day, scheduled_item.meal_type, base_food.item_name, base_food.calorie_count, scheduled_item.weight).join(base_food).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+    recipe_planner_items = db.session.query(scheduled_item.meal_day, scheduled_item.meal_type, scheduled_item.serving_size, recipes.recipe_name, recipes.cal_per_serving).join(recipes).filter(scheduled_item.recipes_id == recipes.recipes_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+
     #query for info from the scheduled items table to populate weekly planner
 
     cal_planner_items = []
 
-    for tuple_to_list in planner_items:
+    for tuple_to_list in base_planner_items:
         tuple_to_list = list(tuple_to_list)
         cal = int(calculate_cal(tuple_to_list[3], tuple_to_list[4]))
         tuple_to_list.pop()
@@ -250,8 +264,9 @@ def show_homepage():
 
     daily_cal_goal = db.session.query(user.dcg).filter(user.email == session['user']).first()
 
+    
 
-    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, planner_items=cal_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total, daily_cal_goal=daily_cal_goal[0])
+    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, base_planner_items=cal_planner_items, recipe_planner_items=recipe_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total, daily_cal_goal=daily_cal_goal[0])
 
 @app.route("/acct")
 def show_acct_info():
@@ -306,14 +321,12 @@ def show_list():
     current_user = user.query.filter_by(email = session["user"]).first()
     current_planner = weekly_planner.query.filter_by(user_id = current_user.user_id, date=start.strftime('%b/%d/%Y')).first()
     
-    planner_items = db.session.query(base_food.item_name).join(scheduled_item).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+    base_planner_items = db.session.query(base_food.item_name).join(scheduled_item).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
 
     shopping_list = []
 
-    for item in planner_items:
+    for item in base_planner_items:
         shopping_list.append(item[0])
-    
-    print(shopping_list)
 
     return render_template("shopping_list.html", shopping_list=set(shopping_list))
 
@@ -362,8 +375,6 @@ def log_out():
     session.pop("user")
     flash("Logged Out")
     return redirect("/")
-
-
 
 if __name__ == "__main__":
     connect_to_db(app)

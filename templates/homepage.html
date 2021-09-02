@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Homepage{% endblock title %}
 {% block body %}
-<div class="container">
+<div class="container" id="planner-container">
     <div class="row" id="current-week">
             <h2>{{day_of_week}}</h2>
             <h2>{{start}} - {{end}}</h2>
     </div>
-    <div class="row">
+    <div class="row" id="planner-and-search">
         <div class="col-sm-3" id="item-search">
         <form method="POST">
             <div class="input-group mb-3">
@@ -64,14 +64,35 @@
                     {% for meal in meal_types %}
                         <div class="col" id="full-meal">
                             <h7>{{meal}}</h7>
-                            {% for planned_meal in planner_items %}
+                            {% for planned_meal in base_planner_items %}
                                 {% if planned_meal[0] == day and planned_meal[1] == meal %}
                                 <div class="row" id="meal-item">
                                     <div class="col">
+                                        <form method="POST" class="delete-btn">
+                                        <input type="submit" name="form-submit4" value="X" class="delete-btn">
+                                        <input type="hidden" value="{{planned_meal[2]}}" name="name">
+                                        </form>
                                         {{planned_meal[2]}}
+                                        
                                     </div>
                                     <div class="col">
                                         {{planned_meal[3]}}cal
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% for planned_meal in recipe_planner_items %}
+                                {% if planned_meal.meal_day == day and planned_meal.meal_type == meal %}
+                                <div class="row" id="meal-item">
+                                    <div class="col">
+                                        <form method="POST" class="delete-btn">
+                                        <input type="submit" name="form-submit3" value="X" class="delete-btn">
+                                        <input type="hidden" value="{{planned_meal.recipe_name}}" name="name">
+                                        </form>
+                                        {{planned_meal.recipe_name}}
+                                    </div>
+                                    <div class="col">
+                                        {{planned_meal.serving_size}}cal
                                     </div>
                                 </div>
                                 {% endif %}
