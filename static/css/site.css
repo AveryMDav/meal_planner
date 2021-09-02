@@ -49,7 +49,7 @@ body {
     margin-top: 40px;
 }
 
-#item-search {
+#item-search, #meal-planner-grid {
     height: 750px;
     margin: 0px auto;
     overflow: auto;;
@@ -90,8 +90,44 @@ h7{
     border-bottom: 1px solid black;
 }
 
-#meal-planner-grid {
-    height: 750px;
-    margin: 0px auto;
+#recipe_plate {
+    background-color: grey;
+    margin: 10px;
+    border: 1px solid black;
+}
+
+#recipe_title {
+    color: black;
+}
+
+#recipe_info_container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: grey;
+    border: 1px solid black;
+    height: auto;
+    max-height: 500px;
+    width: 750px;
     overflow: auto;
+}
+
+#add_recipe_btn {
+    border: 1px solid black;
+}
+
+#servings_add_btn {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+#directions, #ingredients, #single_ingr, #cal_per_serv {
+    width: fit-content;
+}
+
+#sign-up-container {
+    background-color: grey;
+    border: 1px solid black;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }

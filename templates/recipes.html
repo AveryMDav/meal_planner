@@ -3,54 +3,55 @@
 {% block title %}Recipes{% endblock title %}
 
 {% block body %}
-<div class="row">
-    <h1 class="title">Recipes</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#recipe" id="add_recipe">Add Recipe</button>
-        <div class="modal fade" id="recipe" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form method="POST">
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" id="recipe_name" placeholder="Recipe Name" name="recipe_name">
-                                </div>
-                                <div class="row" id="new_ingredient">
+<div class="container">
+    <div class="row">
+        <h1 class="title">Recipes</h1>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#recipe" id="add_recipe">Add Recipe</button>
+            <div class="modal fade" id="recipe" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST">
+                            <div class="modal-body">
+                                <div class="container">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Ingredient" aria-label="ingredient" name="ingredient-1">
-                                        <span class="input-group-text">Quantity:<input type="text" class="form-control-sm" aria-label="quantity" id="quantity-label", name="quantity-1"></span>
+                                        <input type="text" class="form-control" id="recipe_name" placeholder="Recipe Name" name="recipe_name">
+                                    </div>
+                                    <div class="row" id="new_ingredient">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="Ingredient" aria-label="ingredient" name="ingredient-1">
+                                            <span class="input-group-text">Quantity:<input type="text" class="form-control-sm" aria-label="quantity" id="quantity-label", name="quantity-1"></span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="add_recipe" onclick="add_ingredient()">+</button>
+                                    <br>
+                                    <br>
+                                    <div class="mb-3">
+                                        <label for="direction" class="form-label">Directions:</label>
+                                        <textarea class="form-control" id="directions" name="directions" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Calories Per Serving:<input type="number" class="form-control" name="serving_size" id="serving_size" aria-label="Username" aria-describedby="basic-addon1"></span>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-primary" id="add_recipe" onclick="add_ingredient()">+</button>
-                                <br>
-                                <br>
-                                <div class="mb-3">
-                                    <label for="direction" class="form-label">Directions:</label>
-                                    <textarea class="form-control" id="directions" name="directions" rows="3"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <span class="input-group-text" id="basic-addon1">Calories Per Serving:<input type="number" class="form-control" name="serving_size" id="serving_size" aria-label="Username" aria-describedby="basic-addon1"></span>
-                                    
-                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input type="submit" name="form-submit" value ="Add to Planner" class="btn btn-primary">
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" name="form-submit" value ="Add to Planner" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-</div>
+    </div>
     <div class="row">
         {% for recipe in all_recipes %}
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                <div>
-                    <h3><a href="/show_recipe">{{recipe.recipe_name}}</a></h3>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" id="recipe_plate">
+                <div class="col">
+                    <h3><a href="/recipe_info/{{recipe.recipes_id}}" id="recipe_title">{{recipe.recipe_name}}</a></h3>
                 </div>
             </div>
         {% endfor %}
     </div>
+</div>
 <script src="/static/util.js"></script>
 {% endblock body %}

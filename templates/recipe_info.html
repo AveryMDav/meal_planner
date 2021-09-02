@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock title %}
+
+{% block body %}
+    <div class="container" id="recipe_info_container">
+        <div class="row">
+            <h1 class="title">{{display_recipe.recipe_name}}</h1>
+        </div>
+        <div class="row" id="ingredients">
+            <ul>
+                {% for ingredient in ingredients_list %}
+                    <div class="col" id="single_ingr">
+                        <li>{{ingredient[0]}} {{ingredient[1]}}</li>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row" id="directions">
+            <p>{{display_recipe.directions}}</p>
+        </div>
+        <div class="row" id="add_to_planner">
+            <form method="POST">
+                <div class="row">
+                    <div class="col">
+                            <div class="row" id="servings_add_btn">
+                                {% for day in assigned_day %}
+                                    <div class="form-check">
+                                        <label for="day" class="form-check-label">{{day}}</label>
+                                        <input type="radio" class="form-check-input" id="flexRadioDefault1" name="day" value="{{day}}" {% if "Monday" == day %}checked{% endif %}>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row" id="servings_add_btn">
+                                {% for meal in meal_types %}
+                                <div class="form-check">
+                                    <label for="meal" class="form-check-label">{{meal}}</label>
+                                    <input type="radio" class="form-check-input" id="flexRadioDefault1" name="meal" value="{{meal}}" {% if "Breakfast" == meal %}checked{% endif %}>  
+                                </div>
+                                {% endfor %}
+                            </div>
+                        <div class="input-group mb-3" id="servings_add_btn">
+                            <span class="input-group-text" id="basic-addon1">Number of Servings: <input type="number" class="form-control" name="serving_size" id="serving_size" aria-label="Username" aria-describedby="basic-addon1"></span>
+                            <div class="row">
+                                <input type="submit" name="form-submit" value ="Add to Planner" class="btn btn-primary" id="add_recipe_btn">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="col" id="cal_per_serv">
+                <p>Calories Per Serving = {{display_recipe.cal_per_serving}}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

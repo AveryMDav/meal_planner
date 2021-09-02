@@ -84,13 +84,44 @@ def show_recipes():
 
             db.session.add(new_ingredient)
             db.session.commit()
-
     
     all_recipes = recipes.query.filter_by(user_id=current_user.user_id).all()
     recipe_names = [object.recipe_name for object in all_recipes]
     directions = [object.directions for object in all_recipes]
 
     return render_template("recipes.html", recipe_names=recipe_names, directions=directions, all_recipes=all_recipes)
+
+@app.route("/recipe_info/<recipes_id>", methods=["POST", "GET"])
+def show_recipe_info(recipes_id):
+    """render information for single recipe"""
+
+    assigned_day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    meal_types = ["Breakfast", "Lunch", "Dinner", "Snacks"]
+    recipe = recipes.query.filter_by(recipes_id=recipes_id).first()
+    current_user = user.query.filter_by(email=session["user"]).first()
+    current_planner = weekly_planner.query.filter_by(user_id=current_user.user_id).first()
+
+    ingredients_query = db.session.query(recipe_ingredients.quantity, recipe_ingredients.name, recipes.recipes_id).join(recipes).filter(recipe_ingredients.recipes_id == recipes.recipes_id).all()
+
+    ingredients = []
+
+    for item in ingredients_query:
+        if item[2] == recipe.recipes_id:
+            ingredients.append(item)
+
+    if request.method == "POST":
+        recipe_meal = scheduled_item(
+            meal_day = request.form["day"],
+            meal_type = request.form["meal"],
+            serving_size = request.form["serving_size"],
+            weekly_planner_id = current_planner.weekly_planner_id,
+            recipes_id = recipe.recipes_id
+        )
+
+        db.session.add(recipe_meal)
+        db.session.commit()
+
+    return render_template("recipe_info.html", display_recipe=recipe, ingredients_list=ingredients, assigned_day=assigned_day, meal_types=meal_types)
 
 @app.route("/homepage", methods=["POST", "GET"])
 def show_homepage():

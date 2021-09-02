@@ -56,7 +56,8 @@ class scheduled_item(db.Model):
     scheduled_item_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     meal_day = db.Column(db.String(10), nullable=False)
     meal_type = db.Column(db.String(10), nullable=False)
-    weight = db.Column(db.Integer, nullable=False)
+    weight = db.Column(db.Integer)
+    serving_size = db.Column(db.Integer)
     base_food_id = db.Column(db.Integer, db.ForeignKey('base_foods.base_food_id'))
     weekly_planner_id = db.Column(db.Integer, db.ForeignKey('weekly_planner.weekly_planner_id'), nullable=False)
     recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'))
@@ -94,7 +95,7 @@ class recipe_ingredients(db.Model):
     name = db.Column(db.String(120), nullable=False)
     recipes_id = db.Column(db.Integer, db.ForeignKey('recipes.recipes_id'), nullable=False)
 
-    recipes = db.relationship("recipes", backref=db.backref("recipes-food", order_by=recipes_food_id))
+    recipes = db.relationship("recipes", backref=db.backref("recipe_ingredients", order_by=recipes_food_id))
 
     def __repr__(self):
         return f"<recipe_ingredients recipe id={self.recipes_id} quantity={self.quantity} name={self.name}>"
