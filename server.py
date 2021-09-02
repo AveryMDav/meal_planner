@@ -121,6 +121,8 @@ def show_recipe_info(recipes_id):
         db.session.add(recipe_meal)
         db.session.commit()
 
+        return redirect("/homepage")
+
     return render_template("recipe_info.html", display_recipe=recipe, ingredients_list=ingredients, assigned_day=assigned_day, meal_types=meal_types)
 
 @app.route("/homepage", methods=["POST", "GET"])
@@ -222,11 +224,13 @@ def show_homepage():
         db.session.commit()
 
     base_planner_items = db.session.query(scheduled_item.meal_day, scheduled_item.meal_type, base_food.item_name, base_food.calorie_count, scheduled_item.weight).join(base_food).filter(scheduled_item.base_food_id == base_food.base_food_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
+
     recipe_planner_items = db.session.query(scheduled_item.meal_day, scheduled_item.meal_type, scheduled_item.serving_size, recipes.recipe_name, recipes.cal_per_serving).join(recipes).filter(scheduled_item.recipes_id == recipes.recipes_id, scheduled_item.weekly_planner_id == current_planner.weekly_planner_id).all()
 
     #query for info from the scheduled items table to populate weekly planner
 
-    cal_planner_items = []
+    cal_base_planner_items = []
+    cal_recipe_planner_items = []
 
     for tuple_to_list in base_planner_items:
         tuple_to_list = list(tuple_to_list)
@@ -234,8 +238,11 @@ def show_homepage():
         tuple_to_list.pop()
         tuple_to_list.pop()
         tuple_to_list.append(cal)
-        cal_planner_items.append(tuple_to_list)
+        cal_base_planner_items.append(tuple_to_list)
     #calculating the calorie count based on weight in grams of meal
+    
+    for item in recipe_planner_items:
+        cal_recipe_planner_items.append(item)
 
     Monday_total = 0
     Tuesday_total = 0
@@ -245,7 +252,7 @@ def show_homepage():
     Saturday_total = 0
     Sunday_total = 0
 
-    for meal_info in cal_planner_items:
+    for meal_info in cal_base_planner_items:
         if meal_info[0] == "Monday":
             Monday_total = Monday_total + meal_info[3]
         elif meal_info[0] == "Tuesday":
@@ -262,11 +269,28 @@ def show_homepage():
             Sunday_total = Sunday_total + meal_info[3]
     #calculate total calorie count for each day
 
+    for meal_info in cal_recipe_planner_items:
+        if meal_info[0] == "Monday":
+            Monday_total = Monday_total + meal_info[2]
+        elif meal_info[0] == "Tuesday":
+            Tuesday_total = Tuesday_total + meal_info[2]
+        elif meal_info[0] == "Wednesday":
+            Wednesday_total = Wednesday_total + meal_info[2]
+        elif meal_info[0] == "Thursday":
+            Thursday_total = Thursday_total + meal_info[2]
+        elif meal_info[0] == "Friday":
+            Friday_total = Friday_total + meal_info[2]
+        elif meal_info[0] == "Saturday":
+            Saturday_total = Saturday_total + meal_info[2]
+        else:
+            Sunday_total = Sunday_total + meal_info[2]
+
+
     daily_cal_goal = db.session.query(user.dcg).filter(user.email == session['user']).first()
 
     
 
-    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, base_planner_items=cal_planner_items, recipe_planner_items=recipe_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total, daily_cal_goal=daily_cal_goal[0])
+    return render_template("homepage.html", today=today, day_of_week=day_of_week, start=start.strftime('%b/%d/%Y'), end=end.strftime('%b/%d/%Y'), info=info, assigned_day=assigned_day, meal_types=meal_types, base_planner_items=cal_base_planner_items, recipe_planner_items=recipe_planner_items, Monday_total=Monday_total, Tuesday_total=Tuesday_total, Wednesday_total=Wednesday_total, Thursday_total=Thursday_total, Friday_total=Friday_total, Saturday_total=Saturday_total, Sunday_total=Sunday_total, daily_cal_goal=daily_cal_goal[0])
 
 @app.route("/acct")
 def show_acct_info():
