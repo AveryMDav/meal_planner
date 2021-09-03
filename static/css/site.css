@@ -56,8 +56,9 @@ body {
 }
 
 #shopping_list_container {
-    height: 900px;
+    height: 600px;
     width: 500px;
+    max-height: 600px;
     border: 1px solid black;
     overflow: auto;
     padding: 20px;
