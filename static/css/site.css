@@ -55,6 +55,15 @@ body {
     overflow: auto;;
 }
 
+#shopping_list_container {
+    height: 900px;
+    width: 500px;
+    border: 1px solid black;
+    overflow: auto;
+    padding: 20px;
+    padding-left: 50px;
+}
+
 #add_recipe{
     margin-top: 10px;
     width: fit-content;
