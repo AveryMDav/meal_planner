@@ -12,6 +12,7 @@ app.secret_key = "w\x9f\xfd\x8e~\x0cO\x9c\xb5\xd5\x93[\x9b@\n\x9eJ6XC\xde\xc8\x1
 app.jinja_env.undefined = jinja2.StrictUndefined
 
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 @app.route("/")
 def show_front_page():
