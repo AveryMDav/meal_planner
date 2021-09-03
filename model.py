@@ -106,7 +106,8 @@ class recipe_ingredients(db.Model):
 def connect_to_db(app):
     """Connect the database to the Flask app"""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:TwentyFour%404@localhost/mealplanner'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:TwentyFour%404@localhost/mealplanner'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://cbscqbdkzfnlae:42030f6548e08d6c4b94bc3c72d4fcf0f2f2a8f8ffc1dcff9a3c1d3df480334c@ec2-54-83-137-206.compute-1.amazonaws.com:5432/dfpqoqcgdo2ldv'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
