@@ -401,6 +401,7 @@ def log_out():
     flash("Logged Out")
     return redirect("/")
 
+connect_to_db(app)
+
 if __name__ == "__main__":
-    connect_to_db(app)
     app.run(debug=True, host="0.0.0.0")
